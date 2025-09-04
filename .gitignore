@@ -134,6 +134,13 @@ dist
 !.yarn/sdks
 !.yarn/versions
 
-# Vite logs files
+# Electron build output
+release/
+# Build output
+dist/
+build/
+
+# Vite/Webpack logs and timestamps
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+*.log
