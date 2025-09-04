@@ -135,7 +135,10 @@ dist
 !.yarn/versions
 
 # Electron build output
-release/
+release/*
+!release/builder-debug.yml
+!release/builder-effective-config.yaml
+
 # Build output
 dist/
 build/
