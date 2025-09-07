@@ -17,17 +17,14 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className={`h-screen ${theme === 'dark' ? 'theme-dark' : 'theme-light'} flex flex-col overflow-hidden`}>
-      <div className="shrink-0">
-        <Header />
-      </div>
-
-      <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 min-w-0 overflow-hidden">
+    <div className={`h-screen overflow-hidden ${theme === 'dark' ? 'theme-dark' : 'theme-light'} flex flex-col`}>
+      <Header />
+      <div className="flex-1 flex min-h-0">
+        <div className="flex-1 min-w-0">
           <PokerTable />
         </div>
 
-        <div className="w-80 shrink-0">
+        <div className="w-80 overflow-y-auto">
           <Sidebar />
         </div>
       </div>

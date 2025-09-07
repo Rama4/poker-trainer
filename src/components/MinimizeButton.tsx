@@ -3,9 +3,10 @@ import React from 'react';
 interface MinimizeButtonProps {
   isMinimized: boolean;
   onToggle: () => void;
-  position?: 'top-right' | 'bottom-right';
+  position?: 'top-right' | 'bottom-right' | 'center-right';
   size?: 'sm' | 'md';
   showBackground?: boolean;
+  orientation?: 'vertical' | 'horizontal';
 }
 
 const MinimizeButton: React.FC<MinimizeButtonProps> = ({
@@ -14,10 +15,12 @@ const MinimizeButton: React.FC<MinimizeButtonProps> = ({
   position = 'top-right',
   size = 'sm',
   showBackground = false,
+  orientation = 'vertical',
 }) => {
   const positionClasses = {
     'top-right': 'top-2 right-2',
     'bottom-right': 'bottom-6 right-6',
+    'center-right': 'top-1/2 -translate-y-1/2 -right-3',
   };
 
   const sizeClasses = {
@@ -46,7 +49,10 @@ const MinimizeButton: React.FC<MinimizeButtonProps> = ({
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d={isMinimized ? "M19 9l-7 7-7-7" : "M5 15l7-7 7 7"}
+          d={orientation === 'vertical' 
+            ? (isMinimized ? "M19 9l-7 7-7-7" : "M5 15l7-7 7 7")
+            : (isMinimized ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7")
+          }
         />
       </svg>
     </button>
