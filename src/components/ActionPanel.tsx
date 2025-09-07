@@ -4,7 +4,7 @@ import { RootState, AppDispatch } from '../store/store'
 import { submitBluffDetection } from '../store/slices/gameSlice'
 import { addNotification } from '../store/slices/uiSlice'
 
-const ActionPanel: React.FC = () => {
+const ActionPanel: React.FC<{ show: boolean, setShow: (show: boolean) => void }> = ({ show, setShow }) => {
   const dispatch = useDispatch<AppDispatch>()
   const { scenario, loading } = useSelector((state: RootState) => state.game)
   const [selectedPrediction, setSelectedPrediction] = useState<'bluff' | 'value' | null>(null)
@@ -46,38 +46,42 @@ const ActionPanel: React.FC = () => {
     }
   }
 
+  if (!show) {
+    return null
+  }
+
   if (!scenario) {
     return (
-      <div className="absolute bottom-6 left-6 right-6 bg-gray-800 rounded-lg p-6 text-center">
-        <div className="text-gray-400">Loading training scenario...</div>
+      <div className="absolute bottom-6 left-6 right-6 theme-bg-surface-elevated rounded-lg p-6 text-center border-2 theme-border shadow-dark-elevated">
+        <div className="theme-text-muted">Loading training scenario...</div>
       </div>
     )
   }
 
   if (showResult && lastResult) {
     return (
-      <div className="absolute bottom-6 left-6 right-6 bg-gray-800 rounded-lg p-6 border-2 border-gray-600">
+      <div className="absolute bottom-6 left-6 right-6 theme-bg-surface-elevated rounded-lg p-6 border-2 theme-border shadow-dark-elevated">
         <div className="text-center space-y-4">
-          <div className={`text-2xl font-bold ${lastResult.correct ? 'text-green-400' : 'text-red-400'}`}>
+          <div className={`text-2xl font-bold ${lastResult.correct ? 'theme-text-success' : 'theme-text-error'}`}>
             {lastResult.correct ? '✓ Correct!' : '✗ Incorrect'}
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
-              <div className="text-gray-400">Your Prediction</div>
-              <div className="font-semibold text-white capitalize">{lastResult.userPrediction}</div>
+              <div className="theme-text-muted">Your Prediction</div>
+              <div className="font-semibold theme-text-primary capitalize">{lastResult.userPrediction}</div>
             </div>
             <div>
-              <div className="text-gray-400">Actual Answer</div>
-              <div className="font-semibold text-white capitalize">{lastResult.actualAnswer}</div>
+              <div className="theme-text-muted">Actual Answer</div>
+              <div className="font-semibold theme-text-primary capitalize">{lastResult.actualAnswer}</div>
             </div>
             <div>
-              <div className="text-gray-400">AI Confidence</div>
-              <div className="font-semibold text-white">{(lastResult.confidence * 100).toFixed(1)}%</div>
+              <div className="theme-text-muted">AI Confidence</div>
+              <div className="font-semibold theme-text-primary">{(lastResult.confidence * 100).toFixed(1)}%</div>
             </div>
           </div>
 
-          <div className="text-xs text-gray-400">
+          <div className="text-xs theme-text-accent">
             Next scenario loading...
           </div>
         </div>
@@ -86,13 +90,23 @@ const ActionPanel: React.FC = () => {
   }
 
   return (
-    <div className="absolute bottom-6 left-6 right-6 bg-gray-800 rounded-lg p-6 border-2 border-gray-600">
+    <div className="absolute bottom-6 left-6 right-6 theme-bg-surface-elevated rounded-lg p-6 border-2 theme-border shadow-dark-elevated">
+      {/* Minimize button */}
+      <button
+        onClick={() => setShow(false)}
+        className="absolute top-2 right-2 theme-text-muted hover:text-[var(--text-primary)] transition-colors duration-200"
+        title="Minimize panel"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
       <div className="space-y-4">
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-white mb-2">
+          <h3 className="text-lg font-semibold theme-text-primary mb-2">
             Is this player bluffing?
           </h3>
-          <p className="text-sm text-gray-300">
+          <p className="text-sm theme-text-secondary">
             Analyze the situation and make your prediction
           </p>
         </div>
@@ -103,8 +117,8 @@ const ActionPanel: React.FC = () => {
             onClick={() => setSelectedPrediction('bluff')}
             className={`px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
               selectedPrediction === 'bluff'
-                ? 'bg-red-600 text-white shadow-lg'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                ? 'theme-bg-error theme-text-primary shadow-dark-elevated'
+                : 'theme-bg-tertiary theme-text-secondary hover:bg-[var(--hover)]'
             }`}
             disabled={loading}
           >
@@ -114,8 +128,8 @@ const ActionPanel: React.FC = () => {
             onClick={() => setSelectedPrediction('value')}
             className={`px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
               selectedPrediction === 'value'
-                ? 'bg-green-600 text-white shadow-lg'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                ? 'theme-bg-success theme-text-primary shadow-dark-elevated'
+                : 'theme-bg-tertiary theme-text-secondary hover:bg-[var(--hover)]'
             }`}
             disabled={loading}
           >
@@ -126,7 +140,7 @@ const ActionPanel: React.FC = () => {
         {/* Confidence slider */}
         {selectedPrediction && (
           <div className="space-y-2">
-            <div className="flex justify-between text-sm text-gray-400">
+            <div className="flex justify-between text-sm theme-text-muted">
               <span>Confidence</span>
               <span>{confidence}%</span>
             </div>
@@ -136,7 +150,7 @@ const ActionPanel: React.FC = () => {
               max="100"
               value={confidence}
               onChange={(e) => setConfidence(Number(e.target.value))}
-              className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              className="w-full h-2 theme-bg-tertiary rounded-lg appearance-none cursor-pointer slider"
             />
           </div>
         )}
@@ -148,8 +162,8 @@ const ActionPanel: React.FC = () => {
             disabled={!selectedPrediction || loading}
             className={`px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
               selectedPrediction && !loading
-                ? 'btn-primary'
-                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                ? 'theme-bg-accent text-[var(--bg-primary)] hover:bg-[var(--accent-dark)] shadow-dark-elevated'
+                : 'theme-bg-tertiary theme-text-muted cursor-not-allowed'
             }`}
           >
             {loading ? 'Analyzing...' : 'Submit Prediction'}
@@ -157,9 +171,9 @@ const ActionPanel: React.FC = () => {
         </div>
 
         {/* Hints */}
-        <div className="text-xs text-gray-400 text-center space-y-1">
+        <div className="text-xs theme-text-muted text-center space-y-1">
           <div>💡 Consider: bet sizing, player position, board texture, and betting pattern</div>
-          <div>📊 Pot odds: {scenario.potOdds}:1 | Board: {scenario.boardTexture}</div>
+          <div className="theme-text-accent">📊 Pot odds: {scenario.potOdds}:1 | Board: {scenario.boardTexture}</div>
         </div>
       </div>
     </div>

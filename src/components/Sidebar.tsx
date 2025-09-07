@@ -12,13 +12,13 @@ const Sidebar: React.FC = () => {
   const { scenario } = useSelector((state: RootState) => state.game)
 
   return (
-    <div className="w-80 bg-gray-800 border-l border-gray-700 flex flex-col">
+    <div className="w-80 theme-bg-surface-elevated border-l theme-border flex flex-col shadow-dark-elevated">
       {/* Tab buttons */}
-      <div className="flex border-b border-gray-700">
+      <div className="flex border-b theme-border">
         <button
           onClick={() => dispatch(toggleStats())}
           className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
-            showStats ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+            showStats ? 'theme-bg-tertiary theme-text-primary' : 'theme-text-secondary hover:bg-[var(--hover)]'
           }`}
         >
           📊 Stats
@@ -26,7 +26,7 @@ const Sidebar: React.FC = () => {
         <button
           onClick={() => dispatch(toggleSettings())}
           className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
-            showSettings ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+            showSettings ? 'theme-bg-tertiary theme-text-primary' : 'theme-text-secondary hover:bg-[var(--hover)]'
           }`}
         >
           ⚙️ Settings
@@ -34,7 +34,7 @@ const Sidebar: React.FC = () => {
         <button
           onClick={() => dispatch(toggleHelp())}
           className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
-            showHelp ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+            showHelp ? 'theme-bg-tertiary theme-text-primary' : 'theme-text-secondary hover:bg-[var(--hover)]'
           }`}
         >
           ❓ Help
@@ -49,32 +49,32 @@ const Sidebar: React.FC = () => {
         
         {!showStats && !showSettings && !showHelp && (
           <div className="p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Current Scenario</h3>
+            <h3 className="text-lg font-semibold theme-text-primary mb-4">Current Scenario</h3>
             {scenario ? (
               <div className="space-y-4">
-                <div className="bg-gray-700 rounded-lg p-4">
-                  <h4 className="font-medium text-white mb-2">Scenario Details</h4>
-                  <p className="text-sm text-gray-300 mb-3">{scenario.description}</p>
+                <div className="theme-section">
+                  <h4 className="font-medium theme-text-primary mb-2">Scenario Details</h4>
+                  <p className="text-sm theme-text-secondary mb-3">{scenario.description}</p>
                   
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-gray-400">Pot Odds:</span>
-                      <span className="text-white ml-1">{scenario.potOdds}:1</span>
+                      <span className="theme-text-muted">Pot Odds:</span>
+                      <span className="theme-text-primary ml-1">{scenario.potOdds}:1</span>
                     </div>
                     <div>
-                      <span className="text-gray-400">Board:</span>
-                      <span className="text-white ml-1 capitalize">{scenario.boardTexture}</span>
+                      <span className="theme-text-muted">Board:</span>
+                      <span className="theme-text-primary ml-1 capitalize">{scenario.boardTexture}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-gray-700 rounded-lg p-4">
-                  <h4 className="font-medium text-white mb-2">Available Actions</h4>
+                <div className="theme-section">
+                  <h4 className="font-medium theme-text-primary mb-2">Available Actions</h4>
                   <div className="flex flex-wrap gap-2">
                     {scenario.playerActions.map((action, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 bg-gray-600 rounded text-xs text-gray-300 capitalize"
+                        className="px-2 py-1 theme-bg-secondary rounded text-xs theme-text-secondary capitalize"
                       >
                         {action}
                       </span>
@@ -82,12 +82,12 @@ const Sidebar: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-xs text-gray-400">
+                <div className="text-xs theme-text-accent">
                   💡 Analyze the betting pattern, position, and board texture to make your decision
                 </div>
               </div>
             ) : (
-              <div className="text-gray-400 text-center py-8">
+              <div className="theme-text-muted text-center py-8">
                 No active scenario
               </div>
             )}

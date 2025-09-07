@@ -6,12 +6,12 @@ interface PlayerChipsProps {
 
 const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
   const getChipColor = (value: number) => {
-    if (value >= 1000) return "bg-chip-black border-gray-300";
-    if (value >= 500) return "bg-purple-600 border-purple-300";
-    if (value >= 100) return "bg-chip-green border-green-300";
-    if (value >= 25) return "bg-chip-blue border-blue-300";
-    if (value >= 5) return "bg-chip-red border-red-300";
-    return "bg-white border-gray-400 text-black";
+    if (value >= 1000) return "theme-bg-secondary theme-border";
+    if (value >= 500) return "theme-bg-tertiary theme-border";
+    if (value >= 100) return "theme-bg-success theme-border-success";
+    if (value >= 25) return "theme-bg-accent border-[var(--accent-dark)]";
+    if (value >= 5) return "theme-bg-error theme-border-error";
+    return "theme-bg-surface-elevated theme-border theme-text-primary";
   };
 
   console.log(
@@ -27,7 +27,7 @@ const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
     if (remaining >= 1000) {
       const count = Math.floor(remaining / 1000);
       stacks.push({
-        color: "bg-chip-black border-gray-300",
+        color: "bg-dark-secondary border-dark-border",
         count,
         value: 1000,
       });
@@ -38,7 +38,7 @@ const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
     if (remaining >= 500) {
       const count = Math.floor(remaining / 500);
       stacks.push({
-        color: "bg-purple-600 border-purple-300",
+        color: "bg-dark-tertiary border-dark-border",
         count,
         value: 500,
       });
@@ -49,7 +49,7 @@ const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
     if (remaining >= 100) {
       const count = Math.floor(remaining / 100);
       stacks.push({
-        color: "bg-chip-green border-green-300",
+        color: "bg-dark-success border-dark-success",
         count,
         value: 100,
       });
@@ -59,21 +59,21 @@ const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
     // Blue chips ($25)
     if (remaining >= 25) {
       const count = Math.floor(remaining / 25);
-      stacks.push({ color: "bg-chip-blue border-blue-300", count, value: 25 });
+      stacks.push({ color: "bg-dark-accent border-dark-accent-dark", count, value: 25 });
       remaining %= 25;
     }
 
     // Red chips ($5)
     if (remaining >= 5) {
       const count = Math.floor(remaining / 5);
-      stacks.push({ color: "bg-chip-red border-red-300", count, value: 5 });
+      stacks.push({ color: "bg-dark-error border-dark-error", count, value: 5 });
       remaining %= 5;
     }
 
     // White chips ($1)
     if (remaining > 0) {
       stacks.push({
-        color: "bg-white border-gray-400 text-black",
+        color: "bg-dark-surface-elevated border-dark-border text-dark-text-primary",
         count: remaining,
         value: 1,
       });
@@ -101,7 +101,7 @@ const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
                   }}
                 >
                   <div className="w-full h-full rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold">
+                    <span className="text-xs font-bold theme-text-primary">
                       {stack.value >= 1000
                         ? `${stack.value / 1000}K`
                         : stack.value}
@@ -114,7 +114,7 @@ const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
 
           {/* Stack count indicator */}
           {stack.count > 5 && (
-            <div className="absolute -top-2 -right-1 bg-yellow-500 text-black text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+            <div className="absolute -top-2 -right-1 theme-bg-accent text-[var(--bg-primary)] text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
               {stack.count}
             </div>
           )}
@@ -122,7 +122,7 @@ const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
       ))}
 
       {/* Total amount */}
-      <div className="ml-2 text-sm font-bold text-yellow-400">
+      <div className="ml-2 text-sm font-bold theme-text-accent">
         ${amount.toLocaleString()}
       </div>
     </div>

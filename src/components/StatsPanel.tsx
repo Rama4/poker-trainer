@@ -13,52 +13,52 @@ const StatsPanel: React.FC = () => {
       label: 'Total Scenarios',
       value: totalScenarios.toString(),
       icon: '📊',
-      color: 'text-blue-400',
+      color: 'text-dark-text-secondary',
     },
     {
       label: 'Correct Predictions',
       value: trainingStats.correct.toString(),
       icon: '✅',
-      color: 'text-green-400',
+      color: 'text-dark-success',
     },
     {
       label: 'Incorrect Predictions',
       value: trainingStats.incorrect.toString(),
       icon: '❌',
-      color: 'text-red-400',
+      color: 'text-dark-error',
     },
     {
       label: 'Accuracy',
       value: `${accuracy.toFixed(1)}%`,
       icon: '🎯',
-      color: 'text-yellow-400',
+      color: 'text-dark-accent',
     },
     {
       label: 'Current Streak',
       value: trainingStats.streak.toString(),
       icon: '🔥',
-      color: 'text-orange-400',
+      color: 'text-dark-warning',
     },
     {
       label: 'Best Streak',
       value: trainingStats.bestStreak.toString(),
       icon: '🏆',
-      color: 'text-purple-400',
+      color: 'text-dark-accent',
     },
   ]
 
   return (
-    <div className="p-6 space-y-6">
-      <h3 className="text-lg font-semibold text-white">Training Statistics</h3>
+    <div className="p-6 space-y-6 bg-dark-surface-elevated rounded-lg shadow-dark-elevated">
+      <h3 className="text-lg font-semibold text-dark-text-primary">Training Statistics</h3>
       
       {/* Main stats grid */}
       <div className="grid grid-cols-1 gap-4">
         {stats.map((stat, index) => (
-          <div key={index} className="bg-gray-700 rounded-lg p-4">
+          <div key={index} className="bg-dark-tertiary rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <span className="text-2xl">{stat.icon}</span>
-                <span className="text-sm text-gray-300">{stat.label}</span>
+                <span className="text-sm text-dark-text-secondary">{stat.label}</span>
               </div>
               <span className={`text-xl font-bold ${stat.color}`}>
                 {stat.value}
@@ -69,47 +69,47 @@ const StatsPanel: React.FC = () => {
       </div>
 
       {/* Accuracy visualization */}
-      <div className="bg-gray-700 rounded-lg p-4">
-        <h4 className="font-medium text-white mb-3">Accuracy Progress</h4>
-        <div className="w-full bg-gray-600 rounded-full h-3">
+      <div className="bg-dark-tertiary rounded-lg p-4">
+        <h4 className="font-medium text-dark-text-primary mb-3">Accuracy Progress</h4>
+        <div className="w-full bg-dark-secondary rounded-full h-3">
           <div
-            className="bg-gradient-to-r from-green-500 to-blue-500 h-3 rounded-full transition-all duration-500"
+            className="bg-gradient-to-r from-dark-success to-dark-accent h-3 rounded-full transition-all duration-500"
             style={{ width: `${Math.min(accuracy, 100)}%` }}
           ></div>
         </div>
-        <div className="flex justify-between text-xs text-gray-400 mt-1">
-          <span>0%</span>
-          <span className="font-medium text-white">{accuracy.toFixed(1)}%</span>
-          <span>100%</span>
+        <div className="flex justify-between text-xs text-dark-text-muted mt-1">
+          <span className="text-dark-text-secondary">0%</span>
+          <span className="font-medium text-dark-text-primary">{accuracy.toFixed(1)}%</span>
+          <span className="text-dark-text-secondary">100%</span>
         </div>
       </div>
 
       {/* Performance insights */}
-      <div className="bg-gray-700 rounded-lg p-4">
-        <h4 className="font-medium text-white mb-3">Performance Insights</h4>
+      <div className="bg-dark-tertiary rounded-lg p-4">
+        <h4 className="font-medium text-dark-text-primary mb-3">Performance Insights</h4>
         <div className="space-y-2 text-sm">
           {accuracy >= 80 && (
-            <div className="text-green-400">🎉 Excellent! You're a bluff detection expert!</div>
+            <div className="text-dark-success">🎉 Excellent! You're a bluff detection expert!</div>
           )}
           {accuracy >= 60 && accuracy < 80 && (
-            <div className="text-yellow-400">👍 Good work! Keep practicing to improve.</div>
+            <div className="text-dark-warning">👍 Good work! Keep practicing to improve.</div>
           )}
           {accuracy < 60 && totalScenarios > 5 && (
-            <div className="text-orange-400">💪 Keep training! Focus on betting patterns and position.</div>
+            <div className="text-dark-error">💪 Keep training! Focus on betting patterns and position.</div>
           )}
           {trainingStats.streak >= 5 && (
-            <div className="text-purple-400">🔥 You're on fire! {trainingStats.streak} correct in a row!</div>
+            <div className="text-dark-accent">🔥 You're on fire! {trainingStats.streak} correct in a row!</div>
           )}
           {totalScenarios === 0 && (
-            <div className="text-gray-400">Start training to see your statistics here.</div>
+            <div className="text-dark-text-muted">Start training to see your statistics here.</div>
           )}
         </div>
       </div>
 
       {/* Quick tips */}
-      <div className="bg-gray-700 rounded-lg p-4">
-        <h4 className="font-medium text-white mb-3">💡 Tips for Improvement</h4>
-        <ul className="space-y-1 text-xs text-gray-300">
+      <div className="bg-dark-tertiary rounded-lg p-4">
+        <h4 className="font-medium text-dark-text-primary mb-3">💡 Tips for Improvement</h4>
+        <ul className="space-y-1 text-xs text-dark-text-secondary">
           <li>• Pay attention to bet sizing relative to pot</li>
           <li>• Consider player position and timing</li>
           <li>• Analyze board texture and possible draws</li>

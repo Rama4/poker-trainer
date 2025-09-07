@@ -55,7 +55,7 @@ pnpm dev
 3. **Set up environment variables** (optional)
    ```bash
    # Create .env file for API configuration
-   echo "VITE_API_URL=http://localhost:8000/api" > .env
+   echo "API_URL=http://localhost:8000/api" > .env
    ```
 
 ### Development
@@ -66,7 +66,7 @@ pnpm dev
    pnpm dev
    ```
 
-   This will start both the React development server (Vite) and Electron simultaneously.
+   This will start both the React development server and Electron simultaneously.
 
 2. **The application will open automatically** in a new Electron window
 
@@ -266,7 +266,7 @@ pnpm lint
    - Clear build cache with `rm -rf dist`
 
 3. **API connection issues**
-   - Check `VITE_API_URL` environment variable
+   - Check `API_URL` environment variable
    - Verify backend server is running
    - Check network connectivity and firewall settings
 

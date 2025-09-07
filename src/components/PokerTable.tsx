@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import PlayerPosition from './PlayerPosition'
@@ -9,6 +9,7 @@ import LoadingSpinner from './LoadingSpinner'
 
 const PokerTable: React.FC = () => {
   const { loading, scenario, gamePhase } = useSelector((state: RootState) => state.game)
+  const [showActionPanel, setShowActionPanel] = useState(true);
 
   // Mock players for the poker table layout
   const mockPlayers = [
@@ -38,11 +39,11 @@ const PokerTable: React.FC = () => {
   }
 
   return (
-    <div className="flex-1 relative bg-gradient-to-br from-gray-800 to-gray-900 p-6">
+    <div className="flex-1 relative bg-gradient-to-br from-[var(--bg-primary)] to-[var(--bg-secondary)] p-6">
       {/* Main poker table */}
       <div className="relative w-full h-full max-w-6xl mx-auto">
         {/* Table surface */}
-        <div className="poker-table w-full h-full relative flex items-center justify-center">
+        <div className="poker-table w-full h-full relative flex items-center justify-center bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg-surface-elevated)] shadow-dark-elevated rounded-2xl">
           
           {/* Player positions around the table */}
           <div className="absolute inset-0">
@@ -66,10 +67,10 @@ const PokerTable: React.FC = () => {
 
           {/* Scenario description overlay */}
           {scenario && (
-            <div className="absolute top-4 left-4 right-4 bg-black bg-opacity-75 rounded-lg p-4 text-center">
-              <h3 className="text-lg font-semibold text-white mb-2">Training Scenario</h3>
-              <p className="text-gray-300">{scenario.description}</p>
-              <div className="mt-2 text-sm text-yellow-400">
+            <div className="absolute top-4 left-4 right-4 theme-bg-primary bg-opacity-90 rounded-lg p-4 text-center border theme-border shadow-dark-elevated">
+              <h3 className="text-lg font-semibold theme-text-primary mb-2">Training Scenario</h3>
+              <p className="theme-text-secondary">{scenario.description}</p>
+              <div className="mt-2 text-sm theme-text-accent">
                 Pot Odds: {scenario.potOdds}:1 | Board: {scenario.boardTexture}
               </div>
             </div>
@@ -78,7 +79,20 @@ const PokerTable: React.FC = () => {
       </div>
 
       {/* Action panel at the bottom */}
-      <ActionPanel />
+      <ActionPanel show={showActionPanel} setShow={setShowActionPanel}/>
+
+      {/* Show action panel button */}
+      {!showActionPanel && (
+        <button
+          onClick={() => setShowActionPanel(true)}
+          className="absolute bottom-6 right-6 theme-bg-surface-elevated theme-text-primary p-3 rounded-lg hover:bg-[var(--hover)] transition-colors duration-200 border-2 theme-border shadow-dark-elevated"
+          title="Show action panel"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      )}
     </div>
   )
 }

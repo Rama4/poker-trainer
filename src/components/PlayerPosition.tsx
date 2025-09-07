@@ -41,42 +41,42 @@ const PlayerPosition: React.FC<PlayerPositionProps> = ({
       >
         {/* Player avatar and info */}
         <div
-          className={`relative bg-gray-700 rounded-full p-4 border-4 transition-all duration-300 ${
+          className={`relative theme-bg-tertiary rounded-full p-4 border-4 transition-all duration-300 ${
             isActive
-              ? 'border-yellow-400 shadow-lg shadow-yellow-400/50'
+              ? 'theme-border-accent shadow-lg shadow-[var(--accent)]/50'
               : player.isFolded
-              ? 'border-gray-600 opacity-50'
-              : 'border-gray-500'
+              ? 'theme-border opacity-50'
+              : 'theme-border'
           } ${
-            isSuspicious ? 'border-red-500 shadow-lg shadow-red-500/50' : ''
+            isSuspicious ? 'theme-border-error shadow-lg shadow-[var(--error)]/50' : ''
           }`}
         >
           {/* Dealer button */}
           {isDealer && (
-            <div className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center text-black text-xs font-bold">
+            <div className="absolute -top-2 -right-2 w-6 h-6 theme-bg-accent rounded-full flex items-center justify-center text-[var(--bg-primary)] text-xs font-bold">
               D
             </div>
           )}
 
           {/* Player avatar */}
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+          <div className="w-12 h-12 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-dark)] rounded-full flex items-center justify-center text-[var(--bg-primary)] font-bold text-lg">
             {player.name.charAt(0).toUpperCase()}
           </div>
 
           {/* Suspicious indicator */}
           {isSuspicious && (
-            <div className="absolute -top-1 -left-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs">!</span>
+            <div className="absolute -top-1 -left-1 w-4 h-4 theme-bg-error rounded-full flex items-center justify-center">
+              <span className="theme-text-primary text-xs">!</span>
             </div>
           )}
         </div>
 
         {/* Player name */}
         <div className="text-center">
-          <div className={`text-sm font-semibold ${player.isFolded ? 'text-gray-500' : 'text-white'}`}>
+          <div className={`text-sm font-semibold ${player.isFolded ? 'theme-text-muted' : 'theme-text-primary'}`}>
             {player.name}
           </div>
-          <div className={`text-xs ${player.isFolded ? 'text-gray-600' : 'text-gray-300'}`}>
+          <div className={`text-xs ${player.isFolded ? 'theme-text-muted' : 'theme-text-secondary'}`}>
             ${player.chips.toLocaleString()}
           </div>
         </div>

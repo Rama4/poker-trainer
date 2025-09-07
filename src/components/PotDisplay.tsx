@@ -6,10 +6,10 @@ interface PotDisplayProps {
 
 const PotDisplay: React.FC<PotDisplayProps> = ({ amount }) => {
   return (
-    <div className="bg-gray-800 border-2 border-gold rounded-lg px-6 py-3 shadow-lg">
+    <div className="theme-bg-surface-elevated border-2 theme-border-accent rounded-lg px-6 py-3 shadow-dark-elevated">
       <div className="text-center">
-        <div className="text-sm text-gray-300 uppercase tracking-wide">Pot</div>
-        <div className="text-2xl font-bold text-gold">
+        <div className="text-sm theme-text-secondary uppercase tracking-wide">Pot</div>
+        <div className="text-2xl font-bold theme-text-accent">
           ${amount.toLocaleString()}
         </div>
       </div>
