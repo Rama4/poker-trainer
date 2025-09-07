@@ -6,10 +6,12 @@ import CommunityCards from './CommunityCards'
 import PotDisplay from './PotDisplay'
 import ActionPanel from './ActionPanel'
 import LoadingSpinner from './LoadingSpinner'
+import MinimizeButton from './MinimizeButton'
 
 const PokerTable: React.FC = () => {
   const { loading, scenario, gamePhase } = useSelector((state: RootState) => state.game)
   const [showActionPanel, setShowActionPanel] = useState(true);
+  const [showScenario, setShowScenario] = useState(true);
 
   // Mock players for the poker table layout
   const mockPlayers = [
@@ -43,7 +45,7 @@ const PokerTable: React.FC = () => {
       {/* Main poker table */}
       <div className="relative w-full h-full max-w-6xl mx-auto">
         {/* Table surface */}
-        <div className="poker-table w-full h-full relative flex items-center justify-center bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg-surface-elevated)] shadow-dark-elevated rounded-2xl">
+        <div className="poker-table w-full h-full relative flex items-center justify-center shadow-dark-elevated rounded-2xl">
           
           {/* Player positions around the table */}
           <div className="absolute inset-0">
@@ -67,13 +69,30 @@ const PokerTable: React.FC = () => {
 
           {/* Scenario description overlay */}
           {scenario && (
-            <div className="absolute top-4 left-4 right-4 theme-bg-primary bg-opacity-90 rounded-lg p-4 text-center border theme-border shadow-dark-elevated">
-              <h3 className="text-lg font-semibold theme-text-primary mb-2">Training Scenario</h3>
-              <p className="theme-text-secondary">{scenario.description}</p>
-              <div className="mt-2 text-sm theme-text-accent">
-                Pot Odds: {scenario.potOdds}:1 | Board: {scenario.boardTexture}
-              </div>
-            </div>
+            <>
+              {showScenario ? (
+                <div className="absolute top-4 left-4 right-4 rounded-lg p-4 bg-black/70 text-center border theme-border shadow-dark-elevated">
+                  <MinimizeButton
+                    isMinimized={false}
+                    onToggle={() => setShowScenario(false)}
+                    size="sm"
+                  />
+                  <h3 className="text-lg font-semibold theme-text-primary mb-2">Training Scenario</h3>
+                  <p className="theme-text-secondary">{scenario.description}</p>
+                  <div className="mt-2 text-sm theme-text-accent">
+                    Pot Odds: {scenario.potOdds}:1 | Board: {scenario.boardTexture}
+                  </div>
+                </div>
+              ) : (
+                <MinimizeButton
+                  isMinimized={true}
+                  onToggle={() => setShowScenario(true)}
+                  position="top-right"
+                  size="sm"
+                  showBackground={true}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
@@ -83,15 +102,13 @@ const PokerTable: React.FC = () => {
 
       {/* Show action panel button */}
       {!showActionPanel && (
-        <button
-          onClick={() => setShowActionPanel(true)}
-          className="absolute bottom-6 right-6 theme-bg-surface-elevated theme-text-primary p-3 rounded-lg hover:bg-[var(--hover)] transition-colors duration-200 border-2 theme-border shadow-dark-elevated"
-          title="Show action panel"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-          </svg>
-        </button>
+        <MinimizeButton
+          isMinimized={true}
+          onToggle={() => setShowActionPanel(true)}
+          position="bottom-right"
+          size="md"
+          showBackground={true}
+        />
       )}
     </div>
   )

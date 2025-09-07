@@ -35,7 +35,7 @@ const PlayerPosition: React.FC<PlayerPositionProps> = ({
       }}
     >
       <div
-        className={`relative flex flex-col items-center space-y-2 transition-all duration-300 ${
+        className={`relative flex flex-col items-center transition-all duration-300 ${
           isSuspicious ? 'animate-pulse' : ''
         }`}
       >
@@ -71,42 +71,45 @@ const PlayerPosition: React.FC<PlayerPositionProps> = ({
           )}
         </div>
 
-        {/* Player name */}
-        <div className="text-center">
-          <div className={`text-sm font-semibold ${player.isFolded ? 'theme-text-muted' : 'theme-text-primary'}`}>
-            {player.name}
-          </div>
-          <div className={`text-xs ${player.isFolded ? 'theme-text-muted' : 'theme-text-secondary'}`}>
-            ${player.chips.toLocaleString()}
+        {/* Player info and bet container */}
+        <div className="flex items-center space-x-3 mt-2">
+          {/* Current bet */}
+          {player.currentBet > 0 && !player.isFolded && (
+            <PlayerChips amount={player.currentBet} />
+          )}
+          
+          {/* Player name and chips */}
+          <div className="text-center">
+            <div className={`text-sm font-semibold ${player.isFolded ? 'theme-text-muted' : 'theme-text-primary'}`}>
+              {player.name}
+            </div>
+            <div className={`text-xs ${player.isFolded ? 'theme-text-muted' : 'theme-text-secondary'}`}>
+              ${player.chips.toLocaleString()}
+            </div>
           </div>
         </div>
 
-        {/* Current bet */}
-        {player.currentBet > 0 && !player.isFolded && (
-          <PlayerChips amount={player.currentBet} />
-        )}
-
         {/* Player cards (placeholder) */}
         {!player.isFolded && (
-          <div className="flex space-x-1">
-            <div className="w-6 h-8 bg-blue-900 rounded border border-gray-400"></div>
-            <div className="w-6 h-8 bg-blue-900 rounded border border-gray-400"></div>
+          <div className="flex space-x-1 mt-2">
+            <div className="w-6 h-8 theme-bg-tertiary rounded border theme-border"></div>
+            <div className="w-6 h-8 theme-bg-tertiary rounded border theme-border"></div>
           </div>
         )}
 
         {/* Action indicator */}
         {player.hasActed && !player.isFolded && (
-          <div className="text-xs text-green-400 font-semibold">
+          <div className="text-xs theme-text-success font-semibold mt-1">
             {player.currentBet > 0 ? 'BET' : 'CHECK'}
           </div>
         )}
 
         {player.isFolded && (
-          <div className="text-xs text-red-400 font-semibold">FOLD</div>
+          <div className="text-xs theme-text-error font-semibold mt-1">FOLD</div>
         )}
 
         {player.isAllIn && (
-          <div className="text-xs text-yellow-400 font-semibold">ALL-IN</div>
+          <div className="text-xs theme-text-warning font-semibold mt-1">ALL-IN</div>
         )}
       </div>
     </div>

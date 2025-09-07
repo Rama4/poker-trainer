@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
 import { submitBluffDetection } from '../store/slices/gameSlice'
 import { addNotification } from '../store/slices/uiSlice'
+import MinimizeButton from './MinimizeButton'
 
 const ActionPanel: React.FC<{ show: boolean, setShow: (show: boolean) => void }> = ({ show, setShow }) => {
   const dispatch = useDispatch<AppDispatch>()
@@ -92,15 +93,11 @@ const ActionPanel: React.FC<{ show: boolean, setShow: (show: boolean) => void }>
   return (
     <div className="absolute bottom-6 left-6 right-6 theme-bg-surface-elevated rounded-lg p-6 border-2 theme-border shadow-dark-elevated">
       {/* Minimize button */}
-      <button
-        onClick={() => setShow(false)}
-        className="absolute top-2 right-2 theme-text-muted hover:text-[var(--text-primary)] transition-colors duration-200"
-        title="Minimize panel"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+      <MinimizeButton
+        isMinimized={false}
+        onToggle={() => setShow(false)}
+        size="md"
+      />
       <div className="space-y-4">
         <div className="text-center">
           <h3 className="text-lg font-semibold theme-text-primary mb-2">

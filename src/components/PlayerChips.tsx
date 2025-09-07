@@ -122,7 +122,7 @@ const PlayerChips: React.FC<PlayerChipsProps> = ({ amount }) => {
       ))}
 
       {/* Total amount */}
-      <div className="ml-2 text-sm font-bold theme-text-accent">
+      <div className="ml-2 mt-8 text-sm font-bold theme-text-accent">
         ${amount.toLocaleString()}
       </div>
     </div>
