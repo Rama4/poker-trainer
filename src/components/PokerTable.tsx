@@ -8,29 +8,29 @@ import ActionPanel from './ActionPanel'
 import LoadingSpinner from './LoadingSpinner'
 import TransparentPanel from './TransparentPanel'
 
+// Mock players for the poker table layout
+const mockPlayers = [
+  { id: '1', name: 'You', chips: 1500, position: 0, isDealer: false, currentBet: 0, hasActed: true, isFolded: false, isAllIn: false, cards: [] },
+  { id: '2', name: 'Alice', chips: 2300, position: 1, isDealer: false, currentBet: 100, hasActed: true, isFolded: false, isAllIn: false, cards: [] },
+  { id: '3', name: 'Bob', chips: 890, position: 2, isDealer: true, currentBet: 0, hasActed: false, isFolded: false, isAllIn: false, cards: [] },
+  { id: '4', name: 'Charlie', chips: 3200, position: 3, isDealer: false, currentBet: 200, hasActed: true, isFolded: false, isAllIn: false, cards: [] },
+  { id: '5', name: 'Diana', chips: 0, position: 4, isDealer: false, currentBet: 0, hasActed: true, isFolded: true, isAllIn: false, cards: [] },
+  { id: '6', name: 'Eve', chips: 1800, position: 5, isDealer: false, currentBet: 200, hasActed: true, isFolded: false, isAllIn: false, cards: [] },
+]
+
+// Mock community cards
+const mockCommunityCards = [
+  { suit: 'spades', rank: '2', value: 2 },
+  { suit: 'hearts', rank: '8', value: 8 },
+  { suit: 'spades', rank: '3', value: 3 },
+  { suit: 'hearts', rank: '7', value: 7 },
+  { suit: 'diamonds', rank: 'Q', value: 12 },
+]
+
 const PokerTable: React.FC = () => {
   const { loading, scenario, gamePhase } = useSelector((state: RootState) => state.game)
   const [showActionPanel, setShowActionPanel] = useState(true);
   const [showScenario, setShowScenario] = useState(true);
-
-  // Mock players for the poker table layout
-  const mockPlayers = [
-    { id: '1', name: 'You', chips: 1500, position: 0, isDealer: false, currentBet: 0, hasActed: true, isFolded: false, isAllIn: false, cards: [] },
-    { id: '2', name: 'Alice', chips: 2300, position: 1, isDealer: false, currentBet: 100, hasActed: true, isFolded: false, isAllIn: false, cards: [] },
-    { id: '3', name: 'Bob', chips: 890, position: 2, isDealer: true, currentBet: 0, hasActed: false, isFolded: false, isAllIn: false, cards: [] },
-    { id: '4', name: 'Charlie', chips: 3200, position: 3, isDealer: false, currentBet: 200, hasActed: true, isFolded: false, isAllIn: false, cards: [] },
-    { id: '5', name: 'Diana', chips: 0, position: 4, isDealer: false, currentBet: 0, hasActed: true, isFolded: true, isAllIn: false, cards: [] },
-    { id: '6', name: 'Eve', chips: 1800, position: 5, isDealer: false, currentBet: 200, hasActed: true, isFolded: false, isAllIn: false, cards: [] },
-  ]
-
-  // Mock community cards
-  const mockCommunityCards = [
-    { suit: 'spades', rank: '2', value: 2 },
-    { suit: 'hearts', rank: '8', value: 8 },
-    { suit: 'spades', rank: '3', value: 3 },
-    { suit: 'hearts', rank: '7', value: 7 },
-    { suit: 'diamonds', rank: 'Q', value: 12 },
-  ]
 
   if (loading && !scenario) {
     return (
