@@ -33,12 +33,18 @@ const uiSlice = createSlice({
   reducers: {
     toggleSettings: (state) => {
       state.showSettings = !state.showSettings
+      state.showStats = false
+      state.showHelp = false
     },
     toggleStats: (state) => {
       state.showStats = !state.showStats
+      state.showSettings = false
+      state.showHelp = false
     },
     toggleHelp: (state) => {
       state.showHelp = !state.showHelp
+      state.showSettings = false
+      state.showStats = false
     },
     setSelectedPlayer: (state, action: PayloadAction<string | null>) => {
       state.selectedPlayer = action.payload

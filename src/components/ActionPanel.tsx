@@ -3,9 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
 import { submitBluffDetection } from '../store/slices/gameSlice'
 import { addNotification } from '../store/slices/uiSlice'
-import MinimizeButton from './MinimizeButton'
 
-const ActionPanel: React.FC<{ show: boolean, setShow: (show: boolean) => void }> = ({ show, setShow }) => {
+const ActionPanel: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { scenario, loading } = useSelector((state: RootState) => state.game)
   const [selectedPrediction, setSelectedPrediction] = useState<'bluff' | 'value' | null>(null)
@@ -47,21 +46,14 @@ const ActionPanel: React.FC<{ show: boolean, setShow: (show: boolean) => void }>
     }
   }
 
-  if (!show) {
-    return null
-  }
-
   if (!scenario) {
     return (
-      <div className="absolute bottom-6 left-6 right-6 theme-bg-surface-elevated rounded-lg p-6 text-center border-2 theme-border shadow-dark-elevated">
-        <div className="theme-text-muted">Loading training scenario...</div>
-      </div>
+      <div className="theme-text-muted">Loading training scenario...</div>
     )
   }
 
   if (showResult && lastResult) {
     return (
-      <div className="absolute bottom-6 left-6 right-6 theme-bg-surface-elevated rounded-lg p-6 border-2 theme-border shadow-dark-elevated">
         <div className="text-center space-y-4">
           <div className={`text-2xl font-bold ${lastResult.correct ? 'theme-text-success' : 'theme-text-error'}`}>
             {lastResult.correct ? '✓ Correct!' : '✗ Incorrect'}
@@ -86,18 +78,11 @@ const ActionPanel: React.FC<{ show: boolean, setShow: (show: boolean) => void }>
             Next scenario loading...
           </div>
         </div>
-      </div>
     )
   }
 
   return (
-    <div className="absolute bottom-6 left-6 right-6 theme-bg-surface-elevated rounded-lg p-6 border-2 theme-border shadow-dark-elevated">
-      {/* Minimize button */}
-      <MinimizeButton
-        isMinimized={false}
-        onToggle={() => setShow(false)}
-        size="md"
-      />
+    <>
       <div className="space-y-4">
         <div className="text-center">
           <h3 className="text-lg font-semibold theme-text-primary mb-2">
@@ -173,7 +158,7 @@ const ActionPanel: React.FC<{ show: boolean, setShow: (show: boolean) => void }>
           <div className="theme-text-accent">📊 Pot odds: {scenario.potOdds}:1 | Board: {scenario.boardTexture}</div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

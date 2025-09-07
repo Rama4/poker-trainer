@@ -17,15 +17,21 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className={`h-screen ${theme === 'dark' ? 'theme-dark' : 'theme-light'} flex flex-col overflow-hidden`}>
+    <div className={`h-screen overflow-hidden ${theme === 'dark' ? 'theme-dark' : 'theme-light'} flex flex-col`}>
       <Header />
-      <div className="flex-1 flex">
-        <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex min-h-0">
+        <div className="flex-1 min-w-0">
           <PokerTable />
         </div>
-        <Sidebar />
+
+        <div className="w-80 overflow-y-auto">
+          <Sidebar />
+        </div>
       </div>
-      <NotificationCenter />
+
+      <div className="fixed bottom-4 right-4 z-50">
+        <NotificationCenter />
+      </div>
     </div>
   );
 }

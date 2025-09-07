@@ -12,9 +12,9 @@ const Sidebar: React.FC = () => {
   const { scenario } = useSelector((state: RootState) => state.game)
 
   return (
-    <div className="w-80 theme-bg-surface-elevated border-l theme-border flex flex-col shadow-dark-elevated">
+    <div className="w-80 theme-bg-surface-elevated border-l theme-border flex flex-col shadow-dark-elevated h-full">
       {/* Tab buttons */}
-      <div className="flex border-b theme-border">
+      <div className="flex border-b theme-border shrink-0">
         <button
           onClick={() => dispatch(toggleStats())}
           className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
@@ -42,19 +42,19 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Panel content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto min-h-0">
         {showStats && <StatsPanel />}
         {showSettings && <SettingsPanel />}
         {showHelp && <HelpPanel />}
         
         {!showStats && !showSettings && !showHelp && (
-          <div className="p-6">
-            <h3 className="text-lg font-semibold theme-text-primary mb-4">Current Scenario</h3>
+          <div className="p-4">
+            <h3 className="text-lg font-semibold theme-text-primary mb-3">Current Scenario</h3>
             {scenario ? (
               <div className="space-y-4">
-                <div className="theme-section">
-                  <h4 className="font-medium theme-text-primary mb-2">Scenario Details</h4>
-                  <p className="text-sm theme-text-secondary mb-3">{scenario.description}</p>
+                <div className="theme-section p-3">
+                  <h4 className="font-medium theme-text-primary mb-1.5">Scenario Details</h4>
+                  <p className="text-sm theme-text-secondary mb-2">{scenario.description}</p>
                   
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
@@ -68,13 +68,13 @@ const Sidebar: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="theme-section">
-                  <h4 className="font-medium theme-text-primary mb-2">Available Actions</h4>
-                  <div className="flex flex-wrap gap-2">
+                <div className="theme-section p-3">
+                  <h4 className="font-medium theme-text-primary mb-1.5">Available Actions</h4>
+                  <div className="flex flex-wrap gap-1.5">
                     {scenario.playerActions.map((action, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 theme-bg-secondary rounded text-xs theme-text-secondary capitalize"
+                        className="px-2 py-0.5 theme-bg-secondary rounded text-xs theme-text-secondary capitalize"
                       >
                         {action}
                       </span>
@@ -82,7 +82,7 @@ const Sidebar: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-xs theme-text-accent">
+                <div className="text-xs theme-text-accent px-1">
                   💡 Analyze the betting pattern, position, and board texture to make your decision
                 </div>
               </div>
