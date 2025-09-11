@@ -1,10 +1,10 @@
-# 🃏 Poker Trainer - Bluff Detection
+# Poker Trainer - Bluff Detection
 
-A sophisticated desktop application for training poker players in bluff detection using machine learning. Built with Electron, React, TypeScript, and Tailwind CSS.
+A desktop application for training poker players in bluff detection using machine learning. Built with Electron, React, TypeScript, and Tailwind CSS.
 
 ![Poker Trainer Screenshot](assets/screenshot.png)
 
-## 🎯 Features
+## Features
 
 - **AI-Powered Training**: Machine learning model analyzes poker scenarios and provides feedback
 - **Realistic Poker Interface**: Beautiful poker table UI with animated cards and chips
@@ -14,14 +14,14 @@ A sophisticated desktop application for training poker players in bluff detectio
 - **Real-time Feedback**: Instant results with AI confidence scores
 - **Customizable Settings**: Adjust difficulty, scenario types, and UI preferences
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Install pnpm globally (if not already installed)
 npm install -g pnpm
 
 # Clone and setup the project
-git clone https://github.com/your-username/poker-trainer.git
+git clone https://github.com/Rama4/poker-trainer.git
 cd poker-trainer
 pnpm install
 
@@ -29,7 +29,7 @@ pnpm install
 pnpm dev
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -42,7 +42,7 @@ pnpm dev
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/poker-trainer.git
+   git clone https://github.com/Rama4/poker-trainer.git
    cd poker-trainer
    ```
 
@@ -86,7 +86,7 @@ pnpm dev
 
 3. **Find the built application** in the `release/` directory
 
-## 🎮 How to Use
+## How to Use
 
 ### Basic Training Flow
 
@@ -136,9 +136,9 @@ pnpm dev
 - **Likely Bluffs**: Oversized bets, sudden aggression, betting into multiple opponents
 - **Likely Value**: Standard sizing, consistent aggression, strong board connections
 
-## 🛠️ Technical Details
+## Architecture
 
-### Architecture
+### Directory structure
 
 ```
 poker-trainer/
@@ -180,20 +180,7 @@ PUT / api / user / settings;
 GET / api / game / players;
 ```
 
-## 🎨 Customization
-
-### Themes and Styling
-
-The application uses Tailwind CSS with a custom poker theme:
-
-```css
-/* Custom poker colors */
---poker-green: #0F5132
---poker-felt: #1B5E20
---chip-blue: #1976D2
---chip-red: #D32F2F
---gold: #FFD700
-```
+## Customization
 
 ### Adding New Scenarios
 
@@ -211,14 +198,7 @@ interface TrainingScenario {
 }
 ```
 
-## 📊 Performance
-
-### System Requirements
-
-- **OS**: Windows 10/11, macOS 10.14+, Linux (Ubuntu 18.04+)
-- **RAM**: 4GB minimum, 8GB recommended
-- **Storage**: 500MB available space
-- **Display**: 1280x720 minimum resolution
+## Performance
 
 ### Optimization Features
 
@@ -249,7 +229,7 @@ pnpm lint
 - API service integration tests
 - Electron main process tests
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -298,25 +278,6 @@ DEBUG=poker-trainer:* pnpm dev
 - Update documentation as needed
 - Maintain consistent code style
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **React Team** - For the excellent React framework
-- **Electron Team** - For enabling desktop app development
-- **Tailwind CSS** - For the utility-first CSS framework
-- **Redux Toolkit** - For simplified state management
-- **Poker Community** - For inspiration and feedback
-
-## 📞 Support
-
-- **Documentation**: [Wiki](https://github.com/your-username/poker-trainer/wiki)
-- **Issues**: [GitHub Issues](https://github.com/your-username/poker-trainer/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/poker-trainer/discussions)
-- **Email**: support@pokertrainer.com
-
----
-
-**Happy Training! May your bluff detection skills reach new heights! 🚀🃏**
