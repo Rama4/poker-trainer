@@ -2,7 +2,7 @@
 
 A desktop application for training poker players in bluff detection using machine learning. Built with Electron, React, TypeScript, and Tailwind CSS.
 
-![Poker Trainer Screenshot](assets/screenshot.png)
+![Poker Trainer Screenshot](public/poker-trainer.png)
 
 ## Features
 
