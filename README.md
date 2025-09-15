@@ -198,16 +198,7 @@ interface TrainingScenario {
 }
 ```
 
-## Performance
-
-### Optimization Features
-
-- **Lazy Loading**: Components load on demand
-- **Efficient Rendering**: React.memo and useMemo for performance
-- **Minimal Bundle**: Tree shaking and code splitting
-- **Smooth Animations**: Hardware-accelerated CSS transitions
-
-## 🧪 Testing
+## Testing
 
 ### Running Tests
 
