@@ -4,15 +4,32 @@ import { RootState, AppDispatch } from '../store/store'
 import { submitBluffDetection } from '../store/slices/gameSlice'
 import { addNotification } from '../store/slices/uiSlice'
 
+/**
+ * ActionPanel Component
+ * 
+ * Main interactive component for the poker training interface where users make
+ * predictions about whether an opponent's action is a bluff or value bet.
+ * Displays prediction options, confidence slider, and feedback on user predictions.
+ */
 const ActionPanel: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
+  
+  // Get current game state from Redux store
   const { scenario, loading } = useSelector((state: RootState) => state.game)
-  const [selectedPrediction, setSelectedPrediction] = useState<'bluff' | 'value' | null>(null)
-  const [confidence, setConfidence] = useState(70)
-  const [showResult, setShowResult] = useState(false)
-  const [lastResult, setLastResult] = useState<any>(null)
+  
+  // Local state management
+  const [selectedPrediction, setSelectedPrediction] = useState<'bluff' | 'value' | null>(null) // User's current prediction
+  const [confidence, setConfidence] = useState(70)  // User's confidence level (50-100%)
+  const [showResult, setShowResult] = useState(false)  // Controls visibility of result feedback
+  const [lastResult, setLastResult] = useState<any>(null)  // Stores the last prediction result
 
+  /**
+   * Handles the submission of user's prediction
+   * Dispatches the prediction to the store, shows feedback, and resets the form
+   * after a delay for the next scenario
+   */
   const handleSubmitPrediction = async () => {
+    // Validate required data is present
     if (!selectedPrediction || !scenario) return
 
     try {
@@ -46,12 +63,14 @@ const ActionPanel: React.FC = () => {
     }
   }
 
+  // Show loading state when no scenario is available
   if (!scenario) {
     return (
       <div className="theme-text-muted">Loading training scenario...</div>
     )
   }
 
+  // Show result feedback after prediction submission
   if (showResult && lastResult) {
     return (
         <div className="text-center space-y-4">
@@ -81,9 +100,11 @@ const ActionPanel: React.FC = () => {
     )
   }
 
+  // Main prediction interface
   return (
     <>
       <div className="space-y-4">
+        {/* Header section */}
         <div className="text-center">
           <h3 className="text-lg font-semibold theme-text-primary mb-2">
             Is this player bluffing?
@@ -104,7 +125,7 @@ const ActionPanel: React.FC = () => {
             }`}
             disabled={loading}
           >
-            🎭 Bluff
+            Bluff
           </button>
           <button
             onClick={() => setSelectedPrediction('value')}
@@ -115,7 +136,7 @@ const ActionPanel: React.FC = () => {
             }`}
             disabled={loading}
           >
-            💎 Value Bet
+            Value Bet
           </button>
         </div>
 
@@ -154,8 +175,8 @@ const ActionPanel: React.FC = () => {
 
         {/* Hints */}
         <div className="text-xs theme-text-muted text-center space-y-1">
-          <div>💡 Consider: bet sizing, player position, board texture, and betting pattern</div>
-          <div className="theme-text-accent">📊 Pot odds: {scenario.potOdds}:1 | Board: {scenario.boardTexture}</div>
+          <div>Consider: bet sizing, player position, board texture, and betting pattern</div>
+          <div className="theme-text-accent">Pot odds: {scenario.potOdds}:1 | Board: {scenario.boardTexture}</div>
         </div>
       </div>
     </>
