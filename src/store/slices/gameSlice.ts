@@ -1,4 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { BluffDetectionService } from '../../services/bluff-detection/bluff-detection-service';
+
+// Initialize the bluff detection service
+const bluffService = BluffDetectionService.getInstance('poker-bench');
 
 export interface Card {
   suit: 'hearts' | 'diamonds' | 'clubs' | 'spades';
@@ -44,6 +48,8 @@ export interface GameState {
   };
   loading: boolean;
   error: string | null;
+  selectedDifficulty: 'easy' | 'medium' | 'hard';
+  selectedScenarioTypes: string[];
 }
 
 const initialState: GameState = {
@@ -63,35 +69,55 @@ const initialState: GameState = {
   },
   loading: false,
   error: null,
+  selectedDifficulty: 'medium',
+  selectedScenarioTypes: ['river_bluff', 'turn_aggression', 'preflop_3bet', 'check_raise'],
 };
 
 // Async thunks for API calls
-export const fetchTrainingScenario = createAsyncThunk('game/fetchTrainingScenario', async () => {
-  // This would call the backend API
-  // For now, return mock data
-  return {
-    id: `scenario_${Date.now()}`,
-    description: 'Player raises big on the river with a scary board',
-    suspiciousPlayerId: 'player_2',
-    correctAnswer: 'bluff' as const,
-    playerActions: ['fold', 'call', 'raise'],
-    boardTexture: 'wet',
-    potOdds: 3.5,
-  };
-});
+export const fetchTrainingScenario = createAsyncThunk(
+  'game/fetchTrainingScenario',
+  async (_, { getState }) => {
+    const state = getState() as { game: GameState };
+    const { selectedDifficulty, selectedScenarioTypes } = state.game;
+
+    const scenario = await bluffService.getNextScenario({
+      difficulty: selectedDifficulty,
+      scenarioTypes: selectedScenarioTypes,
+    });
+
+    // Convert the scenario to the format expected by the frontend
+    return {
+      id: scenario.id,
+      description: `${scenario.position} player in a ${scenario.boardTexture} board`,
+      suspiciousPlayerId: 'player_1',
+      playerActions: scenario.actions.map(a => `${a.type}${a.amount ? ` ${a.amount}` : ''}`),
+      boardTexture: scenario.boardTexture,
+      potOdds: scenario.potOdds,
+    };
+  }
+);
 
 export const submitBluffDetection = createAsyncThunk(
   'game/submitBluffDetection',
   async ({ prediction, scenarioId }: { prediction: 'bluff' | 'value'; scenarioId: string }) => {
-    console.log('submitBluffDetection: prediction, scenarioId', prediction, scenarioId);
-    // This would submit to the ML model via backend API
-    // For now, return mock result
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const result = await bluffService.submitPrediction(scenarioId, {
+      isBluff: prediction === 'bluff',
+      confidence: 0.8, // We could get this from the UI in the future
+    });
+
     return {
-      correct: Math.random() > 0.4, // 60% correct rate for demo
-      actualAnswer: Math.random() > 0.5 ? 'bluff' : 'value',
-      confidence: Math.random() * 0.4 + 0.6, // 60-100% confidence
+      correct: result.correct,
+      actualAnswer: result.actualAnswer,
+      confidence: result.confidence,
     };
+  }
+);
+
+export const switchDataset = createAsyncThunk(
+  'game/switchDataset',
+  async (datasetType: 'poker-bench' | 'manual') => {
+    await bluffService.switchDataset(datasetType);
+    return datasetType;
   }
 );
 
@@ -110,6 +136,12 @@ const gameSlice = createSlice({
     },
     setGamePhase: (state, action: PayloadAction<GameState['gamePhase']>) => {
       state.gamePhase = action.payload;
+    },
+    setDifficulty: (state, action: PayloadAction<'easy' | 'medium' | 'hard'>) => {
+      state.selectedDifficulty = action.payload;
+    },
+    setScenarioTypes: (state, action: PayloadAction<string[]>) => {
+      state.selectedScenarioTypes = action.payload;
     },
     resetGame: state => {
       state.players = [];
@@ -158,9 +190,27 @@ const gameSlice = createSlice({
       .addCase(submitBluffDetection.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to submit prediction';
+      })
+      .addCase(switchDataset.fulfilled, (state) => {
+        // Reset stats when switching datasets
+        state.trainingStats = {
+          correct: 0,
+          incorrect: 0,
+          streak: 0,
+          bestStreak: 0,
+        };
       });
   },
 });
 
-export const { setPlayers, setCommunityCards, updatePot, setGamePhase, resetGame, clearError } = gameSlice.actions;
+export const {
+  setPlayers,
+  setCommunityCards,
+  updatePot,
+  setGamePhase,
+  resetGame,
+  clearError,
+  setDifficulty,
+  setScenarioTypes,
+} = gameSlice.actions;
 export default gameSlice.reducer;

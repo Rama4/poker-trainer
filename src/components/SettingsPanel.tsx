@@ -1,11 +1,20 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../store/store'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
 import { setSoundEnabled, setAnimationsEnabled, setTheme } from '../store/slices/uiSlice'
+import { setDifficulty, setScenarioTypes, switchDataset } from '../store/slices/gameSlice'
 
 const SettingsPanel: React.FC = () => {
-  const dispatch = useDispatch()
-  const { soundEnabled, animationsEnabled, theme } = useSelector((state: RootState) => state.ui)
+  const dispatch = useAppDispatch()
+  const { soundEnabled, animationsEnabled, theme } = useAppSelector(state => state.ui)
+  const { selectedDifficulty, selectedScenarioTypes } = useAppSelector(state => state.game)
+
+  const handleScenarioTypeChange = (type: string, checked: boolean) => {
+    if (checked) {
+      dispatch(setScenarioTypes([...selectedScenarioTypes, type]))
+    } else {
+      dispatch(setScenarioTypes(selectedScenarioTypes.filter(t => t !== type)))
+    }
+  }
 
   return (
     <div className="theme-panel space-y-6">
@@ -79,9 +88,13 @@ const SettingsPanel: React.FC = () => {
         <div className="space-y-4">
           <div>
             <label className="block text-sm text-dark-text-secondary mb-2">Difficulty Level</label>
-            <select className="w-full bg-dark-secondary text-dark-text-primary rounded-lg px-3 py-2 text-sm">
+            <select 
+              className="w-full bg-dark-secondary text-dark-text-primary rounded-lg px-3 py-2 text-sm"
+              value={selectedDifficulty}
+              onChange={(e) => dispatch(setDifficulty(e.target.value as 'easy' | 'medium' | 'hard'))}
+            >
               <option value="easy">Easy - Clear bluffs only</option>
-              <option value="medium" selected>Medium - Mixed scenarios</option>
+              <option value="medium">Medium - Mixed scenarios</option>
               <option value="hard">Hard - Marginal situations</option>
             </select>
           </div>
@@ -89,17 +102,38 @@ const SettingsPanel: React.FC = () => {
           <div>
             <label className="block text-sm text-dark-text-secondary mb-2">Scenario Types</label>
             <div className="space-y-2">
-              {['River Bluffs', 'Turn Aggression', 'Preflop 3-bets', 'Check-raises'].map((type) => (
-                <label key={type} className="flex items-center">
+              {[
+                { id: 'river_bluff', label: 'River Bluffs' },
+                { id: 'turn_aggression', label: 'Turn Aggression' },
+                { id: 'preflop_3bet', label: 'Preflop 3-bets' },
+                { id: 'check_raise', label: 'Check-raises' }
+              ].map(({ id, label }) => (
+                <label key={id} className="flex items-center">
                   <input
                     type="checkbox"
-                    defaultChecked
+                    checked={selectedScenarioTypes.includes(id)}
+                    onChange={(e) => handleScenarioTypeChange(id, e.target.checked)}
                     className="rounded bg-dark-secondary border-dark-border text-dark-accent focus:ring-dark-accent"
                   />
-                  <span className="ml-2 text-sm text-dark-text-secondary">{type}</span>
+                  <span className="ml-2 text-sm text-dark-text-secondary">{label}</span>
                 </label>
               ))}
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm text-dark-text-secondary mb-2">Dataset Selection</label>
+            <select 
+              className="w-full bg-dark-secondary text-dark-text-primary rounded-lg px-3 py-2 text-sm"
+              onChange={(e) => {
+                const datasetType = e.target.value as 'poker-bench' | 'manual';
+                void dispatch(switchDataset(datasetType));
+              }}
+              defaultValue="poker-bench"
+            >
+              <option value="poker-bench">PokerBench Dataset</option>
+              <option value="manual">Manual Scenarios</option>
+            </select>
           </div>
 
           <div className="flex items-center justify-between">
@@ -146,4 +180,3 @@ const SettingsPanel: React.FC = () => {
 }
 
 export default SettingsPanel
-

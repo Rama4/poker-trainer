@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState, AppDispatch } from '../store/store'
-import { submitBluffDetection } from '../store/slices/gameSlice'
+import React, { useState, useEffect } from 'react'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
+import { submitBluffDetection, fetchTrainingScenario } from '../store/slices/gameSlice'
 import { addNotification } from '../store/slices/uiSlice'
 
 /**
@@ -12,16 +11,23 @@ import { addNotification } from '../store/slices/uiSlice'
  * Displays prediction options, confidence slider, and feedback on user predictions.
  */
 const ActionPanel: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   
   // Get current game state from Redux store
-  const { scenario, loading } = useSelector((state: RootState) => state.game)
+  const { scenario, loading } = useAppSelector(state => state.game)
   
   // Local state management
   const [selectedPrediction, setSelectedPrediction] = useState<'bluff' | 'value' | null>(null) // User's current prediction
   const [confidence, setConfidence] = useState(70)  // User's confidence level (50-100%)
   const [showResult, setShowResult] = useState(false)  // Controls visibility of result feedback
   const [lastResult, setLastResult] = useState<any>(null)  // Stores the last prediction result
+
+  // Fetch initial scenario on component mount and handle loading state
+  useEffect(() => {
+    if (!scenario && !loading) {
+      void dispatch(fetchTrainingScenario())
+    }
+  }, [dispatch, scenario, loading])
 
   /**
    * Handles the submission of user's prediction
@@ -49,10 +55,12 @@ const ActionPanel: React.FC = () => {
       }))
 
       // Reset for next scenario
-      setTimeout(() => {
+      setTimeout(async () => {
         setShowResult(false)
         setSelectedPrediction(null)
         setConfidence(70)
+        // Fetch next scenario
+        await dispatch(fetchTrainingScenario())
       }, 3000)
 
     } catch (error) {
@@ -158,8 +166,8 @@ const ActionPanel: React.FC = () => {
           </div>
         )}
 
-        {/* Submit button */}
-        <div className="flex justify-center">
+        {/* Submit and Skip buttons */}
+        <div className="flex justify-center space-x-4">
           <button
             onClick={handleSubmitPrediction}
             disabled={!selectedPrediction || loading}
@@ -170,6 +178,18 @@ const ActionPanel: React.FC = () => {
             }`}
           >
             {loading ? 'Analyzing...' : 'Submit Prediction'}
+          </button>
+          <button
+            onClick={() => {
+              setShowResult(false);
+              setSelectedPrediction(null);
+              setConfidence(70);
+              void dispatch(fetchTrainingScenario());
+            }}
+            disabled={loading}
+            className="px-4 py-2 rounded-lg font-medium text-sm theme-text-secondary hover:theme-text-primary transition-colors duration-200"
+          >
+            Skip →
           </button>
         </div>
 
